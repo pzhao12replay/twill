@@ -6,7 +6,6 @@ branches:
 cache:
   directories:
   - $HOME/.m2
-dist: precise
 env:
 - PROFILE='hadoop-2.0'
 - PROFILE='hadoop-2.1'
@@ -39,12 +38,10 @@ matrix:
   - env: PROFILE='hadoop-2.5,java8-test'
     jdk: oraclejdk7
 script:
-- touch NOW
+- touch /tmp/NOW
 - echo GIBSTUDYSTART $(date)
 - mvn test -P $PROFILE -Dsurefire.redirectTestOutputToFile=false -Dtwill.zk.server.localhost=false
 - echo GIBSTUDYEND $(date)
 - cd $TRAVIS_BUILD_DIR
-- if [ "$TRAVIS_OS_NAME" == "osx" ];        then echo TESTNUM $(find . -name TEST-*.xml
-  -newer NOW | wc -l);        else echo TESTNUM $(find -name TEST-*.xml -newer NOW
-  | wc -l);        fi
+- echo TESTNUM $(find . -name TEST-*.xml -newer /tmp/NOW | wc -l)
 sudo: false
